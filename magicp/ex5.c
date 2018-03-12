@@ -47,6 +47,9 @@ int main(){
         printf("%s\n", result_ptr[i]);  
     }
 
-    free(result_ptr);   // Clear memory
+    /* Clear memory */
+    free(result_ptr); 
+    x = NULL;
+    result_ptr = NULL;
     return 0;
 }
