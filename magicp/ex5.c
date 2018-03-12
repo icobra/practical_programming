@@ -49,7 +49,6 @@ int main(){
 
     /* Clear memory */
     free(result_ptr); 
-    x = NULL;
-    result_ptr = NULL;
+
     return 0;
 }
