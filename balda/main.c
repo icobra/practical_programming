@@ -39,38 +39,69 @@ int show_field(char field[5][5]){
 }
 
 int player_turn(char field[5][5]){
-
+    /* Input date of gamer  */
     char line[100];              // Input line
     char letter;                 // Letter
     int a,b;                     // Coordinats of letter
     char word[25];               // Word
-
-    // Input date of gamer
-    printf("Введите букву кооридинаты и слово в формате 1 2 m worm: \n");
-    fgets(line, sizeof(line), stdin);
-    sscanf(line, "%d %d %c %25s", &a, &b, &letter, word);
-
-    printf("%d %d %c %s \n \n", a, b, letter, word);
+    int guard = 1;                    // Guard of correct input
     
-    //Simple check of validation
-    if (field[a-1][b-1] == '0'){
-        field[a-1][b-1] = letter;
+    while(guard == 1){
+        printf("Введите букву кооридинаты и слово в формате 1 2 m worm: \n");
+        fgets(line, sizeof(line), stdin);
+        sscanf(line, "%d %d %c %25s", &a, &b, &letter, word);
+ 
+        //Print for check input date
+        printf("%d %d %c %s \n \n", a, b, letter, word);
+    
+        //Simple check of validation
+        if (field[a-1][b-1] == '0'){
+            field[a-1][b-1] = letter;
+            guard = 0;
+        }
+        else{
+            printf("Клетка уже занята \n");
+            guard = 1;
+        }
+    }
+}
+
+int ask_play(){
+    char answer[100];        // Input answer
+    char answer_letter;      // Letter
+
+    printf("Сыграем? Y/N: \n");
+    fgets(answer, sizeof(answer), stdin);
+    sscanf(answer, "%c", &answer_letter);
+    //Condition of continue
+    if (answer_letter == 'Y' || answer_letter == 'y'){
+        return 1;
     }
     else{
-        printf("Клетка уже занята \n");
+        return 0;
     }
 }
 
 int main(){
-    
-    char field[5][5];            // Our field
+    int game;                      // Codition for game   
+    char field[5][5];              // Our field
 
-    zero_field(field);          // Make all field position = Zero 
-    show_field(field);          // Print our field on screen with scale 
-    centralword_field(field);   // Start word in our game. Set on center of field
-    show_field(field);          // Print our field on screen with scale
-    player_turn(field);         // Input date of gamer
-    show_field(field);          // Print our field on screen with scale
-
+    printf("Интеллектуальная игра \"Балда\" \n");
+    game = ask_play();             // Do you want play? 
+    while (game == 1){
+        zero_field(field);         // Make all field position = Zero
+        int turn = 0;              // Initialization of turn
+        centralword_field(field);  // Start word in our game.
+        show_field(field);         // Print our field on screen with scale
+        //Main game circle
+        while (turn < 20){
+            player_turn(field);    // Input date of gamer
+            show_field(field);     // Print our field on screen with scale
+            turn ++;
+        }
+        printf("Игра окончена. \n");
+        game = ask_play();            // Do you want play? 
+    }
+    printf("Спасибо за игру. До новых встреч. \n");
     return 0;
 }
